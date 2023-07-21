@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(req, res) {
+export async function GET() {
   try {
     return NextResponse.json({ message: 'knock-knock flash-card api!' }, { status: 200 });
   } catch (error) {

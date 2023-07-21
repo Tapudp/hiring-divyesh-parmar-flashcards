@@ -2,7 +2,7 @@ import logger from '@/app/helpers/logger';
 import { connect, disconnect } from '../../../db/connection';
 import { NextResponse } from 'next/server';
 
-async function GET(req, res) {
+async function GET() {
   try {
     const connection = await connect();
     const [rows] = await connection.execute('SELECT * FROM words');
