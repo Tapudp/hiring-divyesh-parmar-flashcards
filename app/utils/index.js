@@ -1,4 +1,4 @@
-import * as calculateWordBinTime from './calculateWordBinTime';
+import calculateWordBinTime from './calculateWordBinTime';
 
 const utils = {
   calculateWordBinTime,

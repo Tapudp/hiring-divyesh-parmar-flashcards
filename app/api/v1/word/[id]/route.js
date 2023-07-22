@@ -1,6 +1,5 @@
 import { connect, disconnect } from '@/app/db/connection';
-import logger from '@/app/helpers/logger';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET(_, request) {
   try {
