@@ -17,9 +17,23 @@ export async function GET() {
     const [rows] = await connection.query(sql);
     await disconnect(connection);
 
-    return NextResponse.json({ data: rows }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Review data fetched successfully',
+        data: rows,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Review data fetch failed',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -48,8 +62,22 @@ export async function PUT(requestBody) {
     const [rows] = await connection.query(sql, values);
 
     await disconnect(connection);
-    return NextResponse.json({ data: rows }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Updated review for word successfully',
+        data: rows,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Update review for word failed',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }

@@ -11,9 +11,23 @@ export async function GET(_, request) {
 
     await disconnect(connection);
 
-    return NextResponse.json({ data: rows }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Fetched the word successfully',
+        data: rows,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to fetch the word',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -33,9 +47,23 @@ export async function PUT(requestBody, requestDetails) {
 
     await disconnect(connection);
 
-    return NextResponse.json({ data: { affectedRows } }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Updated the word successfully',
+        data: { affectedRows },
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to update the word',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -53,8 +81,22 @@ export async function DELETE(_, requestDetails) {
     const { affectedRows } = updateDetails;
 
     await disconnect(connection);
-    return NextResponse.json({ data: { affectedRows } }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Deleted the word successfully',
+        data: { affectedRows },
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to delete the word',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }

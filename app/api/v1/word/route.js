@@ -13,8 +13,22 @@ export async function POST(requestBody) {
 
     await disconnect(connection);
 
-    return NextResponse.json({ data: { row: row, fields: fields } }, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Created new word successfully',
+        data: { row: row, fields: fields },
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to create a new word',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }

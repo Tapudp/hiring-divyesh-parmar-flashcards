@@ -12,9 +12,23 @@ async function GET() {
     }
 
     await disconnect(connection);
-    return NextResponse.json({ data: rows }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Fetched all words successfully',
+        data: rows,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to fetch all the words ',
+        error: error,
+      },
+      { status: 500 }
+    );
   }
 }
 
