@@ -14,8 +14,14 @@ const TIMESPANS = {
   11: -1, // Never
 };
 
+const USERS = {
+  ADMIN: 'admin',
+  STUDENT: 'student',
+};
+
 const constants = {
-  TIMESPANS: TIMESPANS,
+  TIMESPANS,
+  USERS,
 };
 
 export default constants;
