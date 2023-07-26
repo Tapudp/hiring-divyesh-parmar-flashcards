@@ -19,22 +19,22 @@ export default function Actor() {
   };
 
   if (!selectedWord) {
-    return <div>Please select a word to take actions!</div>;
+    return <div className='grid p-2'>Please select a word or create a new one</div>;
   }
 
   return (
     <div className='grid grid-rows-2 p-2 bg-emerald-100 gap-4'>
-      <div className='divide-y divide-fuchsia-300 grid gap-1 content-center'>
-        <div className='text-4xl'>Word details</div>
-        <div className='grid grid-cols-4'>
+      <div className='divide-y divide-fuchsia-300 grid gap-1'>
+        <div className='text-4xl'>Details</div>
+        <div className='grid grid-cols-4 items-center'>
           <p className='grid col-span-1'>Internal-id</p>
           <p className='grid col-span-2'>{selectedWord.id}</p>
         </div>
-        <div className='grid grid-cols-4'>
+        <div className='grid grid-cols-4 items-center'>
           <p className='grid col-span-1'>Word</p>
           <p className='grid col-span-2'>{selectedWord.word}</p>
         </div>
-        <div className='grid grid-cols-4'>
+        <div className='grid grid-cols-4 items-center'>
           <p className='grid col-span-1'>Definition</p>
           <p className='grid col-span-2'>{selectedWord.definition}</p>
         </div>

@@ -29,7 +29,7 @@ export default function AdminComponent() {
         </div>
         <WordList />
       </div>
-      <div className='grid col-span-5 border border-4'>
+      <div className='grid col-span-5 border border-1 rounded'>
         {mode === constants.MODES.create ? <Creator /> : <Actor />}
       </div>
       <div />
