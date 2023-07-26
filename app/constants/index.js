@@ -38,6 +38,8 @@ const actionMessages = {
   CREATE_ERROR: 'There was an error while creating the word',
   UPDATE_SUCCESS: 'Word updated successfully',
   UPDATE_ERROR: 'There was an error while updating the word',
+  DELETE_SUCCESS: 'Word deleted successfully',
+  DELETE_ERROR: 'There was an error while deleting the word',
 };
 
 const constants = {

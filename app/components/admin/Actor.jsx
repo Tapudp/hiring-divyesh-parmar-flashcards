@@ -1,7 +1,6 @@
 'use client';
 
 import { useAdminContext } from '../../context/admin';
-import Creator from './Creator';
 
 export default function Actor() {
   const {
@@ -16,7 +15,7 @@ export default function Actor() {
 
     if (!confirmed) return;
 
-    deleteWord();
+    deleteWord().then((result) => alert(`${result}`));
   };
 
   if (!selectedWord) {

@@ -27,7 +27,7 @@ const AdminProvider = ({ children }) => {
 
   const deleteWord = () => {
     setOngoing(true);
-    fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
+    return fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
       method: 'DELETE',
     })
       .then(async (response) => {
@@ -44,6 +44,7 @@ const AdminProvider = ({ children }) => {
             };
           });
         }
+        return Promise.resolve(constants.actionMessages.DELETE_SUCCESS);
       })
       .catch((error) => {
         console.log(
@@ -51,6 +52,7 @@ const AdminProvider = ({ children }) => {
           adminState.selectedWord.id,
           error
         );
+        return Promise.reject(constants.actionMessages.DELETE_ERROR);
       })
       .finally(() => {
         setOngoing(false);
