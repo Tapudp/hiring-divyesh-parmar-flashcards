@@ -9,7 +9,7 @@ export default function WordCount() {
   } = useAdminContext();
 
   return (
-    <div className='grid text-sm text-black-300 bg-blue-100 cursor-default px-2 mr-2 items-center'>
+    <div className='grid text-sm text-black-300 bg-blue-100 cursor-default p-2 mr-2 items-center'>
       Total words count : {isAdminContentLoading ? '. . . ' : listOfWords.length}
     </div>
   );

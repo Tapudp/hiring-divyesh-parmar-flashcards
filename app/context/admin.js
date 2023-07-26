@@ -12,6 +12,7 @@ const AdminContext = createContext({
 const AdminProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [adminState, setAdminState] = useState(constants.ADMIN_DEFAULT_STATE);
+  const [isOngoing, setOngoing] = useState(false);
 
   const pickWord = (wordObject) => {
     if (adminState.selectedWord !== null && adminState.selectedWord.id === wordObject.id) {
@@ -25,6 +26,7 @@ const AdminProvider = ({ children }) => {
   };
 
   const deleteWord = () => {
+    setOngoing(true);
     fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
       method: 'DELETE',
     })
@@ -49,10 +51,14 @@ const AdminProvider = ({ children }) => {
           adminState.selectedWord.id,
           error
         );
+      })
+      .finally(() => {
+        setOngoing(false);
       });
   };
 
   const createWord = (wordObject) => {
+    setOngoing(true);
     if (!wordObject || !wordObject.word || !wordObject.definition)
       return constants.actionMessages.NO_DETAILS;
 
@@ -88,13 +94,59 @@ const AdminProvider = ({ children }) => {
       .catch((error) => {
         console.log('there was an error while deleting the word :: ', wordObject, error);
         return Promise.reject(constants.actionMessages.CREATE_ERROR);
+      })
+      .finally(() => {
+        setOngoing(false);
       });
-
-    return result;
   };
+
+  const updateWord = (wordObject) => {
+    setOngoing(true);
+    if (!wordObject || !wordObject.word || !wordObject.definition) {
+      return constants.actionMessages.NO_DETAILS;
+    }
+
+    return fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ ...wordObject }),
+    })
+      .then(async (response) => {
+        const { success } = await response.json();
+        if (success) {
+          setAdminState((prev) => {
+            const newListWitUpdate = prev.listOfWords.map((item) => {
+              if (item.id === wordObject.id) {
+                return { ...wordObject };
+              }
+              return item;
+            });
+
+            return {
+              ...prev,
+              selectedWord: { ...wordObject },
+              listOfWords: [...newListWitUpdate],
+            };
+          });
+          return Promise.resolve(constants.actionMessages.UPDATE_SUCCESS);
+        }
+      })
+      .catch((error) => {
+        console.log('there was an error while deleting the word :: ', wordObject, error);
+        return Promise.reject(constants.actionMessages.UPDATE_ERROR);
+      })
+      .finally(() => {
+        setOngoing(false);
+      });
+  };
+
+  const switchToEditMode = () =>
+    setAdminState((prev) => ({ ...prev, mode: constants.MODES.create }));
 
   const switchToCreateMode = () =>
     setAdminState((prev) => ({ ...prev, mode: constants.MODES.create, selectedWord: null }));
+
+  const switchToDefaultMode = () =>
+    setAdminState((prev) => ({ ...prev, mode: constants.MODES.none }));
 
   useEffect(() => {
     fetch('/api/v1/words')
@@ -118,8 +170,12 @@ const AdminProvider = ({ children }) => {
         isAdminContentLoading: loading,
         pickWord,
         deleteWord,
+        switchToEditMode,
         switchToCreateMode,
+        switchToDefaultMode,
         createWord,
+        updateWord,
+        isAnyProcessOngoing: isOngoing,
       }}
     >
       {children}

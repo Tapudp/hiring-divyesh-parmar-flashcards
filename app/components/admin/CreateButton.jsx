@@ -7,7 +7,7 @@ export default function CreateButton() {
 
   return (
     <button
-      className='grid items-center border rounded cursor-pointer w-3/4 bg-blue-400 hover:bg-blue-100 p-1'
+      className='grid items-center border rounded cursor-pointer w-3/4 bg-blue-400 hover:bg-blue-100'
       onClick={switchToCreateMode}
     >
       Add a new word

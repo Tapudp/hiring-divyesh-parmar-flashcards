@@ -36,6 +36,8 @@ const actionMessages = {
   WORD_EXISTS: 'The same word already exists in the system',
   CREATE_SUCCESS: 'Word created successfully',
   CREATE_ERROR: 'There was an error while creating the word',
+  UPDATE_SUCCESS: 'Word updated successfully',
+  UPDATE_ERROR: 'There was an error while updating the word',
 };
 
 const constants = {

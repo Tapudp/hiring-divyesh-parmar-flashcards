@@ -47,7 +47,12 @@ export async function PUT(requestBody, requestDetails) {
     } = requestDetails;
     const { word, definition } = await requestBody.json();
 
-    const sql = `UPDATE words SET word = ?, definition = ? WHERE id = ?`;
+    const sql = `
+      UPDATE words
+      SET word = COALESCE(?, word),
+      definition = COALESCE(?, definition)
+      WHERE id = ?
+    `;
     const values = [word, definition, id];
 
     const [updateDetails] = await connection.query(sql, values);
@@ -59,12 +64,12 @@ export async function PUT(requestBody, requestDetails) {
       {
         success: true,
         message: 'Updated the word successfully',
-        data: { affectedRows },
+        data: { affectedRows, id },
       },
       { status: 200 }
     );
   } catch (error) {
-    logger.error(' failed : word : delete :: ', id, error);
+    logger.error(' failed : word : delete :: ', error);
     return NextResponse.json(
       {
         success: false,
