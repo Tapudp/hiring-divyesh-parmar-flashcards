@@ -1,25 +1,33 @@
 import { connect, disconnect } from '@/app/db/connection';
+import logger from '@/app/helpers/logger';
 import { NextResponse } from 'next/server';
 
-export async function GET(_, request) {
+export async function GET(_, requestDetails) {
   try {
     const connection = await connect();
+    const {
+      params: { id },
+    } = requestDetails;
+
     const sql = `SELECT * FROM words WHERE id = ?`;
-    const values = [request.params.id];
+    const values = [id];
 
     const [rows] = await connection.query(sql, values);
 
     await disconnect(connection);
 
+    logger.info(' success : word : get :: ', id, rows);
     return NextResponse.json(
       {
-        success: true,
-        message: 'Fetched the word successfully',
+        success: rows.length > 0,
+        message:
+          rows.length < 1 ? 'There was no word with this id' : 'Fetched the word successfully',
         data: rows,
       },
       { status: 200 }
     );
   } catch (error) {
+    logger.error(' failed : word : get :: ', id, error);
     return NextResponse.json(
       {
         success: false,
@@ -46,7 +54,7 @@ export async function PUT(requestBody, requestDetails) {
     const { affectedRows } = updateDetails;
 
     await disconnect(connection);
-
+    logger.info(' success : word : edit :: ', id, updateDetails);
     return NextResponse.json(
       {
         success: true,
@@ -56,6 +64,7 @@ export async function PUT(requestBody, requestDetails) {
       { status: 200 }
     );
   } catch (error) {
+    logger.error(' failed : word : delete :: ', id, error);
     return NextResponse.json(
       {
         success: false,
@@ -81,15 +90,17 @@ export async function DELETE(_, requestDetails) {
     const { affectedRows } = updateDetails;
 
     await disconnect(connection);
+    logger.info(' success : word : delete :: ', id, updateDetails);
     return NextResponse.json(
       {
         success: true,
         message: 'Deleted the word successfully',
-        data: { affectedRows },
+        data: { affectedRows, id },
       },
       { status: 200 }
     );
   } catch (error) {
+    logger.error(' failed : word : delete :: ', id, error);
     return NextResponse.json(
       {
         success: false,

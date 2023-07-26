@@ -19,9 +19,23 @@ const USERS = {
   STUDENT: 'student',
 };
 
+const MODES = {
+  edit: 'EDIT',
+  create: 'CREATE',
+  none: '',
+};
+
+const ADMIN_DEFAULT_STATE = {
+  selectedWord: null,
+  mode: MODES.none, // edit | create,
+  listOfWords: [],
+};
+
 const constants = {
   TIMESPANS,
   USERS,
+  ADMIN_DEFAULT_STATE,
+  MODES,
 };
 
 export default constants;

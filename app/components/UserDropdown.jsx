@@ -20,7 +20,7 @@ export default function UserDropdown() {
 
   return (
     <select
-      className='border border-solid rounded border-violet-900 m-5 p-2'
+      className='border rounded border-violet-900 m-5 p-2 shadow-inner border-opacity-20'
       onChange={handleChange}
       value={state.userType}
     >

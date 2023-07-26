@@ -18,14 +18,14 @@ export default function Header() {
   return (
     <div className='border border-solid rounded bg-green-100 grid grid-cols-2'>
       <p
-        className='grid cursor-default text-6xl text-purple-800 text-opacity-70 hover:text-red-400 cursor-pointer'
+        className='grid cursor-default text-5xl text-purple-800 text-opacity-70 hover:text-red-400 cursor-pointer'
         onClick={navigateToEntry}
       >
         Flashcards
       </p>
       {userType !== '' ? (
         <p
-          className='grid self-center justify-self-end py-2 px-3 text-lg cursor-pointer font-serif font-bold tracking-wide text-rose-700 underline decoration-wavy underline-offset-4 capitalize hover:uppercase'
+          className='grid self-center justify-self-end py-2 px-3 text-lg cursor-pointer font-serif font-bold text-purple-600 hover:text-opacity-25 capitalize hover:underline border-2 border-indigo-100 hover:bg-indigo-200 hover:shadow-inner'
           onClick={navigateToEntry}
         >
           {userType}

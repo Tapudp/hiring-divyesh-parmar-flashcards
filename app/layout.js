@@ -12,11 +12,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <CommonProvider>
-        <body className='grid gap-2 grid-rows-[80px_auto] w-full bg-white p-2'>
-          <div className=''>
+        {/* <body className='grid gap-2 grid-rows-[80px_row-span-6] w-full bg-white p-2'> */}
+        <body className='grid gap-2 grid-rows-12 w-full bg-white p-2'>
+          <div className='grid row-span-2'>
             <Header />
           </div>
-          <div className='grid place-content-center h-max	'>{children}</div>
+          <div className='grid row-span-8'>{children}</div>
         </body>
       </CommonProvider>
     </html>
