@@ -52,6 +52,47 @@ const AdminProvider = ({ children }) => {
       });
   };
 
+  const createWord = (wordObject) => {
+    if (!wordObject || !wordObject.word || !wordObject.definition)
+      return constants.actionMessages.NO_DETAILS;
+
+    const currentListOfWords = adminState.listOfWords.map((item) => item.word);
+
+    if (currentListOfWords.includes(wordObject.word)) return constants.actionMessages.WORD_EXISTS;
+
+    return fetch(`/api/v1/word`, {
+      method: 'POST',
+      body: JSON.stringify({ ...wordObject }),
+    })
+      .then(async (response) => {
+        const { success, data } = await response.json();
+        const newWord = {
+          id: data.row.insertId,
+          word: wordObject.word,
+          definition: wordObject.definition,
+        };
+        if (success) {
+          setAdminState((prev) => {
+            const currentList = [...prev.listOfWords];
+            // adding the element in the beginning
+            currentList.unshift(newWord);
+
+            return {
+              ...prev,
+              listOfWords: [...currentList],
+            };
+          });
+          return Promise.resolve(constants.actionMessages.CREATE_SUCCESS);
+        }
+      })
+      .catch((error) => {
+        console.log('there was an error while deleting the word :: ', wordObject, error);
+        return Promise.reject(constants.actionMessages.CREATE_ERROR);
+      });
+
+    return result;
+  };
+
   const switchToCreateMode = () =>
     setAdminState((prev) => ({ ...prev, mode: constants.MODES.create, selectedWord: null }));
 
@@ -78,6 +119,7 @@ const AdminProvider = ({ children }) => {
         pickWord,
         deleteWord,
         switchToCreateMode,
+        createWord,
       }}
     >
       {children}

@@ -31,11 +31,19 @@ const ADMIN_DEFAULT_STATE = {
   listOfWords: [],
 };
 
+const actionMessages = {
+  NO_DETAILS: 'Word Details are not provided clearly',
+  WORD_EXISTS: 'The same word already exists in the system',
+  CREATE_SUCCESS: 'Word created successfully',
+  CREATE_ERROR: 'There was an error while creating the word',
+};
+
 const constants = {
   TIMESPANS,
   USERS,
   ADMIN_DEFAULT_STATE,
   MODES,
+  actionMessages,
 };
 
 export default constants;

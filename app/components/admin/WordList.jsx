@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAdminContext } from '../../context/admin';
 
 export default function WordList() {
@@ -17,12 +17,19 @@ export default function WordList() {
       : 'bg-purple-100 hover:bg-pink-100';
   };
 
+  useEffect(() => {
+    const wordListContainer = document.getElementById('word-list-container');
+    if (!wordListContainer) {
+      wordListContainer.scrollTop();
+    }
+  }, [listOfWords.length]);
+
   if (!listOfWords || listOfWords.length < 1) {
     return <div> There are no words available yet!</div>;
   }
 
   return (
-    <ul className='h-96 overflow-auto shadow-inner'>
+    <ul id='word-list-container' className='h-96 overflow-auto shadow-inner'>
       {listOfWords.map(({ id, word, definition }, wIdx) => (
         <li
           key={`${id}-${wIdx + 1}`}

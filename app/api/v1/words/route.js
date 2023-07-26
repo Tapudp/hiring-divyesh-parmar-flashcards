@@ -5,13 +5,14 @@ import { NextResponse } from 'next/server';
 async function GET() {
   try {
     const connection = await connect();
-    const [rows] = await connection.execute('SELECT * FROM words');
 
-    if (rows.length > 0) {
-      logger.info('fetched data successfully');
-    }
+    const sql = 'SELECT * FROM words ORDER BY id DESC';
+    const [rows] = await connection.query(sql);
 
     await disconnect(connection);
+
+    logger.info('words : get : success :: ', rows.length);
+
     return NextResponse.json(
       {
         success: true,
@@ -21,6 +22,8 @@ async function GET() {
       { status: 200 }
     );
   } catch (error) {
+    logger.info('words : get : fail :: ', error);
+
     return NextResponse.json(
       {
         success: false,

@@ -18,32 +18,34 @@ const logger = (() => {
       checkIfLogsEnabled();
     }
 
+    const timeStamp = new Date().toString();
+
     if (global.areLogsEnabled || isDev) {
       switch (type) {
         case 'info':
           console.info(
-            ':: %c Flashcard service log ::',
+            `:: %c ${timeStamp} Flashcard service log ::`,
             'background: blue; color: white;',
             ...messages
           );
           break;
         case 'warn':
           console.warn(
-            ':: %c Flashcard service log ::',
+            `:: %c ${timeStamp} Flashcard service log ::`,
             'background: orange; color: white;',
             ...messages
           );
           break;
         case 'error':
           console.error(
-            ':: %c Flashcard service log ::',
+            `:: %c ${timeStamp} Flashcard service log ::`,
             'background: red; color: white;',
             ...messages
           );
           break;
         case 'trace':
           console.trace(
-            ':: %c Flashcard service log ::',
+            `:: %c ${timeStamp} Flashcard service log ::`,
             'background: grey; color: black;',
             ...messages
           );
@@ -51,7 +53,7 @@ const logger = (() => {
         case 'debug':
         default:
           console.log(
-            ':: %c Flashcard service log ::',
+            `:: %c ${timeStamp} Flashcard service log ::`,
             'background: green; color: white;',
             ...messages
           );
