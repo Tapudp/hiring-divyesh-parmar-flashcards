@@ -15,7 +15,9 @@ export default function Actor() {
 
     if (!confirmed) return;
 
-    deleteWord().then((result) => alert(`${result}`));
+    deleteWord()
+      .then((result) => alert(result))
+      .catch((error) => alert(error));
   };
 
   if (!selectedWord) {
@@ -51,7 +53,7 @@ export default function Actor() {
         {selectedWord && (
           <button
             className='p-2 bg-red-400 place-self-end w-1/2'
-            onClick={handleDelete}
+            onClick={() => handleDelete()}
             disabled={isAnyProcessOngoing}
           >
             Delete

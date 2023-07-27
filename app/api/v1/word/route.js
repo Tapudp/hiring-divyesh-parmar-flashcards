@@ -31,7 +31,7 @@ export async function POST(requestBody) {
       {
         success: true,
         message: 'Created new word successfully',
-        data: { ...result },
+        data: { ...result, newWordId: updateDetails.insertId },
       },
       { status: 201 }
     );

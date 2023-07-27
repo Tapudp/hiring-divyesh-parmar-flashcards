@@ -20,15 +20,20 @@ const StudentProvider = ({ children }) => {
       return constants.actionMessages.NO_DETAILS;
     }
 
-    fetch('/api/v1/review', {
+    return fetch('/api/v1/review', {
       method: 'PUT',
-      body: {
-        reviewWord: { ...wordObject },
+      body: JSON.stringify({
+        reviewedWord: { ...wordObject },
         answer,
-      },
+      }),
     })
       .then(async (response) => {
         const { success, message, data } = await response.json();
+
+        if (!success) {
+          return Promise.reject(constants.actionMessages.REVIEW_ERROR);
+        }
+
         setStudentState((prev) => {
           const newList = prev.reviewWords.filter((_, idx) => idx !== 0);
 
@@ -45,10 +50,10 @@ const StudentProvider = ({ children }) => {
       .catch((error) => {
         logger.error('There was some error while updating the review of the word', error);
         return Promise.reject(constants.actionMessages.REVIEW_ERROR);
+      })
+      .finally(() => {
+        setOngoing(false);
       });
-
-    setOngoing(false);
-    return Promise.resolve(constants.actionMessages.REVIEW_SUCCESS);
   };
 
   const toggleDefinition = (value) =>

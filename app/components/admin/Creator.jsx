@@ -42,14 +42,13 @@ export default function Creator() {
 
     if (!confirmed) return;
 
-    const updatedResult = await updateWord({ id: selectedWord.id, word, definition });
-
-    if (updatedResult !== constants.actionMessages.UPDATE_ERROR) {
-      resetVariables();
-      switchToDefaultMode();
-    }
-
-    alert(`${updatedResult}`);
+    updateWord({ id: selectedWord.id, word, definition })
+      .then((result) => {
+        resetVariables();
+        switchToDefaultMode();
+        alert(result);
+      })
+      .catch((error) => alert(error));
   };
 
   const createNewWord = async () => {
@@ -57,14 +56,13 @@ export default function Creator() {
 
     if (!confirmed) return;
 
-    const creationResult = await createWord({ word, definition });
-
-    if (creationResult !== constants.actionMessages.CREATE_ERROR) {
-      resetVariables();
-      switchToDefaultMode();
-    }
-
-    alert(`${creationResult}`);
+    createWord({ word, definition })
+      .then((result) => {
+        resetVariables();
+        switchToDefaultMode();
+        alert(result);
+      })
+      .catch((error) => alert(error));
   };
 
   const handleSubmit = async () => {

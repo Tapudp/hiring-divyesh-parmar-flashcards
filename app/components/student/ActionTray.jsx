@@ -16,7 +16,9 @@ export default function ActionTray({ individualWordToReview }) {
 
     if (!confirmed) return;
 
-    updateReview(individualWordToReview, answer).then((result) => alert(result));
+    updateReview(individualWordToReview, answer)
+      .then((result) => alert(result))
+      .catch((err) => alert(err));
   };
 
   return (

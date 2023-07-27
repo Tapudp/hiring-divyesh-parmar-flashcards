@@ -43,8 +43,9 @@ const AdminProvider = ({ children }) => {
               listOfWords: filteredList,
             };
           });
+          return Promise.resolve(constants.actionMessages.DELETE_SUCCESS);
         }
-        return Promise.resolve(constants.actionMessages.DELETE_SUCCESS);
+        return Promise.reject(constants.actionMessages.DELETE_ERROR);
       })
       .catch((error) => {
         console.log(
@@ -74,12 +75,12 @@ const AdminProvider = ({ children }) => {
     })
       .then(async (response) => {
         const { success, data } = await response.json();
-        const newWord = {
-          id: data.row.insertId,
-          word: wordObject.word,
-          definition: wordObject.definition,
-        };
         if (success) {
+          const newWord = {
+            id: data.newWordId,
+            word: wordObject.word,
+            definition: wordObject.definition,
+          };
           setAdminState((prev) => {
             const currentList = [...prev.listOfWords];
             // adding the element in the beginning
@@ -87,14 +88,16 @@ const AdminProvider = ({ children }) => {
 
             return {
               ...prev,
+              selectedWord: null,
               listOfWords: [...currentList],
             };
           });
           return Promise.resolve(constants.actionMessages.CREATE_SUCCESS);
         }
+        return Promise.reject(constants.actionMessages.CREATE_ERROR);
       })
       .catch((error) => {
-        console.log('there was an error while deleting the word :: ', wordObject, error);
+        logger.error('there was an error while deleting the word :: ', wordObject, error);
         return Promise.reject(constants.actionMessages.CREATE_ERROR);
       })
       .finally(() => {
@@ -131,6 +134,8 @@ const AdminProvider = ({ children }) => {
           });
           return Promise.resolve(constants.actionMessages.UPDATE_SUCCESS);
         }
+
+        return Promise.reject(constants.actionMessages.UPDATE_ERROR);
       })
       .catch((error) => {
         console.log('there was an error while deleting the word :: ', wordObject, error);
