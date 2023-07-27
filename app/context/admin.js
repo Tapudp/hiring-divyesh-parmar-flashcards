@@ -1,8 +1,8 @@
 'use client';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import logger from '../helpers/logger';
-import constants from '../constants';
 import Error from 'next/error';
+import { createContext, useContext, useEffect, useState } from 'react';
+import constants from '../constants';
+import logger from '../helpers/logger';
 
 const AdminContext = createContext({
   value: constants.ADMIN_DEFAULT_STATE,
@@ -158,7 +158,8 @@ const AdminProvider = ({ children }) => {
       })
       .catch((error) => {
         logger.error('Admin layout failed to fetch words :: ', error);
-        return new Error('There was error fetching all words');
+        alert('There was error while fetching all the words. You can try after some time.');
+        return Promise.reject('There was error fetching all words');
       })
       .finally(() => {
         setLoading(false);

@@ -31,6 +31,17 @@ const ADMIN_DEFAULT_STATE = {
   listOfWords: [],
 };
 
+const STUDENT_DEFAULT_STATE = {
+  reviewWords: [],
+  currentReviewStatus: '',
+  showDefinition: false,
+};
+
+const reviewStatuses = {
+  TEMPORARY_DONE: 'You are temporarily done; please come back later to review more words.',
+  PERMENANT_DONE: 'You have no more words to review; you are permanently done!',
+};
+
 const actionMessages = {
   NO_DETAILS: 'Word Details are not provided clearly',
   WORD_EXISTS: 'The same word already exists in the system',
@@ -40,6 +51,8 @@ const actionMessages = {
   UPDATE_ERROR: 'There was an error while updating the word',
   DELETE_SUCCESS: 'Word deleted successfully',
   DELETE_ERROR: 'There was an error while deleting the word',
+  REVIEW_SUCCESS: 'Review submitted successfully',
+  REVIEW_ERROR: 'There was an error while submitting the review',
 };
 
 const constants = {
@@ -48,6 +61,8 @@ const constants = {
   ADMIN_DEFAULT_STATE,
   MODES,
   actionMessages,
+  STUDENT_DEFAULT_STATE,
+  reviewStatuses,
 };
 
 export default constants;

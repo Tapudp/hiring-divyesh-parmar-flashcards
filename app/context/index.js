@@ -18,7 +18,6 @@ const CommonProvider = ({ children }) => {
 
   useEffect(() => {
     if (state.userType === '') {
-      logger.debug('from the common provider :: ', state);
       router.replace('/');
     }
   }, []);

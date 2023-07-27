@@ -9,7 +9,12 @@ export async function GET(_, requestDetails) {
       params: { id },
     } = requestDetails;
 
-    const sql = `SELECT * FROM words WHERE id = ?`;
+    const sql = `
+      SELECT *
+      FROM words
+      WHERE id = ?
+      AND is_deleted = 0;
+    `;
     const values = [id];
 
     const [rows] = await connection.query(sql, values);
@@ -27,7 +32,7 @@ export async function GET(_, requestDetails) {
       { status: 200 }
     );
   } catch (error) {
-    logger.error(' failed : word : get :: ', id, error);
+    logger.error(' failed : word : get :: ', error);
     return NextResponse.json(
       {
         success: false,
@@ -88,7 +93,11 @@ export async function DELETE(_, requestDetails) {
     const {
       params: { id },
     } = requestDetails;
-    const sql = `DELETE FROM words WHERE id = ?`;
+    const sql = `
+      UPDATE words
+      SET is_deleted = 1
+      WHERE id = ?;
+    `;
     const values = [id];
 
     const [updateDetails] = await connection.query(sql, values);

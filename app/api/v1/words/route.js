@@ -6,7 +6,12 @@ async function GET() {
   try {
     const connection = await connect();
 
-    const sql = 'SELECT * FROM words ORDER BY id DESC';
+    const sql = `
+      SELECT *
+      FROM words
+      WHERE is_deleted = 0
+      ORDER BY id DESC;
+    `;
     const [rows] = await connection.query(sql);
 
     await disconnect(connection);

@@ -40,4 +40,11 @@ INSERT INTO words (word, definition) VALUES
   ('obtain', 'come into possession of'),
   ('scarce', 'deficient quantity or number compared wih the demand'),
   ('policy', 'a plan of actio adopted by an individual or social group'),
-  ('straight', 'successive or without a break');
+  ('straight', 'successive or without a break'), ---
+  ('grant', 'allow to have'),
+  ('dwell', 'think moodily or anxiously about something'),
+  ('contract', 'a binding agreement that is enforceable by law'),
+  ('earnest', 'characterized by a firm, sincere belief in one''s opinions'),
+  ('yield', 'give or supply'),
+  ('wander','move or cause to move in a sinuous or circular course'),
+  ('insist', 'be emphatic or resolute and refuse to budge');

@@ -16,23 +16,25 @@ export default function AdminComponent() {
   } = useAdminContext();
 
   if (isAdminContentLoading) {
-    return <Loader />;
+    return (
+      <div className='grid col-span-10'>
+        <Loader />
+      </div>
+    );
   }
 
   return (
-    <div className='grid gap-2 grid-cols-12 p-2'>
-      <div />
-      <div className='grid col-span-5'>
+    <div className='grid col-span-10 grid-cols-2'>
+      <div className='grid'>
         <div className='grid grid-cols-2 mb-2 py-1'>
           <WordCount />
           {mode !== constants.MODES.create ? <CreateButton /> : <div className='grid' />}
         </div>
         <WordList />
       </div>
-      <div className='grid col-span-5 border border-1 rounded'>
+      <div className='grid border border-1 rounded'>
         {mode === constants.MODES.create ? <Creator /> : <Actor />}
       </div>
-      <div />
     </div>
   );
 }
