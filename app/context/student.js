@@ -63,7 +63,11 @@ const StudentProvider = ({ children }) => {
     fetch('/api/v1/review')
       .then(async (response) => {
         const { success, message, data } = await response.json();
-        setStudentState((prev) => ({ ...prev, reviewWords: data }));
+        setStudentState((prev) => ({
+          ...prev,
+          reviewWords: data,
+          currentReviewStatus: data.length === 0 ? constants.reviewStatusText[message] : '',
+        }));
       })
       .catch((error) => {
         logger.error('Student layout failed to fetch words to review :: ', error);
