@@ -1,8 +1,7 @@
 'use client';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import logger from '../helpers/logger';
+import { createContext, useContext, useEffect, useState } from 'react';
 import constants from '../constants';
-import Error from 'next/error';
+import logger from '../helpers/logger';
 
 const StudentContext = createContext({
   value: constants.STUDENT_DEFAULT_STATE,
@@ -14,23 +13,39 @@ const StudentProvider = ({ children }) => {
   const [studentState, setStudentState] = useState(constants.STUDENT_DEFAULT_STATE);
   const [isOngoing, setOngoing] = useState(false);
 
-  const updateReview = async (wordObject) => {
+  const updateReview = async (wordObject, answer) => {
     setOngoing(true);
 
     if (!wordObject) {
       return constants.actionMessages.NO_DETAILS;
     }
 
-    setStudentState((prev) => {
-      const newList = prev.reviewWords.filter((_, idx) => idx !== 0);
+    fetch('/api/v1/review', {
+      method: 'PUT',
+      body: {
+        reviewWord: { ...wordObject },
+        answer,
+      },
+    })
+      .then(async (response) => {
+        const { success, message, data } = await response.json();
+        setStudentState((prev) => {
+          const newList = prev.reviewWords.filter((_, idx) => idx !== 0);
 
-      return {
-        ...prev,
-        showDefinition: false,
-        currentReviewStatus: newList.length === 0 ? constants.reviewStatuses.TEMPORARY_DONE : '',
-        reviewWords: newList,
-      };
-    });
+          return {
+            ...prev,
+            showDefinition: false,
+            currentReviewStatus:
+              newList.length === 0 ? constants.reviewStatusText.TEMPORARY_DONE : '',
+            reviewWords: newList,
+          };
+        });
+        return Promise.resolve(constants.actionMessages.REVIEW_SUCCESS);
+      })
+      .catch((error) => {
+        logger.error('There was some error while updating the review of the word', error);
+        return Promise.reject(constants.actionMessages.REVIEW_ERROR);
+      });
 
     setOngoing(false);
     return Promise.resolve(constants.actionMessages.REVIEW_SUCCESS);

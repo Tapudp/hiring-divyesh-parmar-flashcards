@@ -1,4 +1,6 @@
 import { connect, disconnect } from '@/app/db/connection';
+import logger from '@/app/helpers/logger';
+import triggerAdditionToReviewTable from '@/app/helpers/triggerAdditionToReviewTable';
 import { NextResponse } from 'next/server';
 
 export async function POST(requestBody) {
@@ -9,15 +11,27 @@ export async function POST(requestBody) {
     const sql = `INSERT INTO words (word, definition) VALUES (?, ?)`;
     const values = [word, definition];
 
-    const [row, fields] = await connection.query(sql, values);
+    const [updateDetails] = await connection.query(sql, values);
+
+    let result;
+    if (updateDetails.affectedRows > 0) {
+      result = await triggerAdditionToReviewTable(
+        {
+          wordId: updateDetails.insertId,
+          word,
+          definition,
+        },
+        connection
+      );
+    }
 
     await disconnect(connection);
-
+    logger.info(' word :: POST :: success :: ', result);
     return NextResponse.json(
       {
         success: true,
         message: 'Created new word successfully',
-        data: { row: row, fields: fields },
+        data: { ...result },
       },
       { status: 201 }
     );

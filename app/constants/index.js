@@ -1,3 +1,4 @@
+const currentSystemUserId = 1;
 const aSecond = 1 * 1000;
 const TIMESPANS = {
   0: 0,
@@ -13,6 +14,9 @@ const TIMESPANS = {
   10: 4 * 30 * 24 * 60 * 60, // 4 months
   11: -1, // Never
 };
+
+const ALLOWED_WRONG_ATTEMPTS = 10;
+const HIGHEST_BIN = 11;
 
 const USERS = {
   ADMIN: 'admin',
@@ -37,9 +41,15 @@ const STUDENT_DEFAULT_STATE = {
   showDefinition: false,
 };
 
-const reviewStatuses = {
-  TEMPORARY_DONE: 'You are temporarily done; please come back later to review more words.',
-  PERMENANT_DONE: 'You have no more words to review; you are permanently done!',
+const reviewStatus = {
+  temporary: 'TEMPORARY_DONE',
+  permanent: 'PERMANENT_DONE',
+};
+
+const reviewStatusText = {
+  [reviewStatus.temporary]:
+    'You are temporarily done; please come back later to review more words.',
+  [reviewStatus.permanent]: 'You have no more words to review; you are permanently done!',
 };
 
 const actionMessages = {
@@ -56,13 +66,17 @@ const actionMessages = {
 };
 
 const constants = {
+  ALLOWED_WRONG_ATTEMPTS,
+  HIGHEST_BIN,
   TIMESPANS,
   USERS,
   ADMIN_DEFAULT_STATE,
   MODES,
   actionMessages,
   STUDENT_DEFAULT_STATE,
-  reviewStatuses,
+  reviewStatusText,
+  reviewStatus,
+  currentSystemUserId,
 };
 
 export default constants;
