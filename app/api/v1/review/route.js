@@ -2,26 +2,37 @@ import logger from '@/app/helpers/logger';
 import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
 import { connect, disconnect } from '@/app/db/connection';
+import constants from '@/app/constants';
+import subsequentGetReviewQueryHelper from '@/app/helpers/subsequentGetReviewQueryHelper';
 
 export async function GET() {
   try {
     const connection = await connect();
+    // current unix time stamp in seconds
+    const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
     const sql = `
-        SELECT reviews.id, reviews.word_id, reviews.wrong_attempts, reviews.bin, reviews.time_to_next_appearance, words.word AS word, words.definition AS definition
+        SELECT reviews.id, reviews.word_id, reviews.wrong_attempts, reviews.bin, reviews.time_to_next_appearance,
+          words.word AS word, words.definition AS definition
         FROM reviews
         LEFT JOIN words ON reviews.word_id = words.id
-        WHERE wrong_attempts != 10 AND bin < 11 AND time_to_next_appearance <= UNIX_TIMESTAMP()
+        WHERE wrong_attempts != ? AND bin < ? AND time_to_next_appearance <= ?
         ORDER BY bin DESC
       `;
-
-    const [rows] = await connection.query(sql);
+    const values = [
+      constants.ALLOWED_WRONG_ATTEMPTS,
+      constants.HIGHEST_BIN,
+      currentUnixTimeSeconds,
+    ];
+    const [rows] = await connection.query(sql, values);
+    const result = await subsequentGetReviewQueryHelper(rows, connection);
     await disconnect(connection);
-    logger.info('review : get : success :: ', rows.length);
+    logger.info('review : get : success :: ', result.rows.length);
+
     return NextResponse.json(
       {
         success: true,
-        message: 'Review data fetched successfully',
-        data: rows,
+        message: result.message,
+        data: result.rows,
       },
       { status: 200 }
     );
@@ -60,7 +71,6 @@ export async function PUT(requestBody) {
     const totalTimeInSeconds = unixTimestamp + timeToNextAppearance;
 
     const values = [newAttemptsCount, newBin, totalTimeInSeconds, reviewedWord.word_id];
-    logger.error(' time to next appear :: ', values);
 
     const [rows] = await connection.query(sql, values);
 
