@@ -1,9 +1,10 @@
+import constants from '@/app/constants';
+import { connect, disconnect } from '@/app/db/connection';
 import logger from '@/app/helpers/logger';
+import subsequentGetReviewQueryHelper from '@/app/helpers/subsequentGetReviewQueryHelper';
+import { default as validateRequest } from '@/app/helpers/validate-request';
 import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
-import { connect, disconnect } from '@/app/db/connection';
-import constants from '@/app/constants';
-import subsequentGetReviewQueryHelper from '@/app/helpers/subsequentGetReviewQueryHelper';
 
 export async function GET() {
   try {
@@ -52,7 +53,16 @@ export async function GET() {
 export async function PUT(requestBody) {
   try {
     const connection = await connect();
-    const { reviewedWord, answer } = await requestBody.json();
+    const { wrongAttempts, bin, wordId, answer } = await requestBody.json();
+
+    const { isValid: isValidRequest, fieldName } = validateRequest(
+      { wrongAttempts, bin, wordId, answer },
+      utils.validators.conditions
+    );
+
+    if (!isValidRequest) {
+      throw new Error(`request is not valid for ${fieldName}`);
+    }
 
     // update that particular review-id and word-id with a new (bin+1) and time_to_next_appearanace
     const sql = `
@@ -63,12 +73,13 @@ export async function PUT(requestBody) {
             WHERE word_id = ?;
         `;
 
-    const { newAttemptsCount, newBin, timeToNextAppearance } = utils.calculateWordBinTime(
-      reviewedWord,
-      answer
-    );
+    const { newAttemptsCount, newBin, timeToNextAppearance } = utils.calculateWordBinTime({
+      wrongAttempts,
+      bin,
+      answer,
+    });
 
-    const values = [newAttemptsCount, newBin, timeToNextAppearance, reviewedWord.word_id];
+    const values = [newAttemptsCount, newBin, timeToNextAppearance, wordId];
 
     const [rows] = await connection.query(sql, values);
 
@@ -87,9 +98,9 @@ export async function PUT(requestBody) {
     logger.info('review : put : failed :: ', error);
     return NextResponse.json(
       {
-        success: false,
         message: 'Update review for word failed',
-        error: error,
+        success: false,
+        error: error.message,
       },
       { status: 500 }
     );

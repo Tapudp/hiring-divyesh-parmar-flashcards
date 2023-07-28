@@ -65,6 +65,8 @@ const actionMessages = {
   REVIEW_ERROR: 'There was an error while submitting the review',
 };
 
+const validWordRegex = /^[a-zA-Z0-9,. ]*$/;
+
 const constants = {
   ALLOWED_WRONG_ATTEMPTS,
   HIGHEST_BIN,
@@ -77,6 +79,7 @@ const constants = {
   reviewStatusText,
   reviewStatus,
   currentSystemUserId,
+  validWordRegex,
 };
 
 export default constants;

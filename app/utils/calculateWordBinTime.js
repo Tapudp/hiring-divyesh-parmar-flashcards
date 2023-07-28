@@ -14,7 +14,7 @@ import constants from '@/app/constants';
  * @param {*} answer - BOOLEAN
  * @returns
  */
-export default function calculateWordBinAndTime(word, answer) {
+export default function calculateWordBinAndTime({ wrongAttempts, bin, answer }) {
   let newAttemptsCount;
   let newBin;
   let timeToNextAppearance;
@@ -27,11 +27,11 @@ export default function calculateWordBinAndTime(word, answer) {
    * depending on the answer
    */
   if (!answer) {
-    newAttemptsCount = word.wrong_attempts + 1;
+    newAttemptsCount = wrongAttempts + 1;
     newBin = 1;
   } else {
-    newAttemptsCount = word.wrong_attempts;
-    newBin = word.bin + 1;
+    newAttemptsCount = wrongAttempts;
+    newBin = bin + 1;
   }
   const unixTimestamp = new Date().getTime() / 1000;
   timeToNextAppearance = unixTimestamp + constants.TIMESPANS[newBin];
