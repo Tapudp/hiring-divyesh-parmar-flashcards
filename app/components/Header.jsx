@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <div className='border border-solid rounded bg-green-100 grid grid-cols-2'>
       <p
-        className='grid cursor-default text-5xl text-purple-800 text-opacity-70 hover:text-red-400 cursor-pointer'
+        className='grid cursor-default text-5xl text-purple-800 text-opacity-70 hover:text-red-400 cursor-pointer w-fit'
         onClick={navigateToEntry}
       >
         Flashcards

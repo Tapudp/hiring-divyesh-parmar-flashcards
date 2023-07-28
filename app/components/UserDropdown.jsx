@@ -19,17 +19,25 @@ export default function UserDropdown() {
   };
 
   return (
-    <select
-      className='border rounded border-violet-900 m-5 p-2 shadow-inner border-opacity-20'
-      onChange={handleChange}
-      value={state.userType}
-    >
-      <option value={''}>{'select an option'}</option>
-      {Object.entries(constants.USERS).map(([key, value], utIdx) => (
-        <option key={`user-${key}-${utIdx + 1}`} className='capitalize' value={value}>
-          {value}
+    <>
+      <label htmlFor='user-type-menu' className='text-sm'>
+        Select a user-type to proceed :{' '}
+      </label>
+      <select
+        className='border rounded border-violet-900 p-2 shadow-inner border-opacity-20'
+        onChange={handleChange}
+        value={state.userType}
+        id='user-type-menu'
+      >
+        <option value={''} disabled>
+          {'select an option'}
         </option>
-      ))}
-    </select>
+        {Object.entries(constants.USERS).map(([key, value], utIdx) => (
+          <option key={`user-${key}-${utIdx + 1}`} className='capitalize' value={value}>
+            {value}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }
