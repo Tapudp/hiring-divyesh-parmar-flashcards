@@ -29,6 +29,7 @@ const AdminProvider = ({ children }) => {
     setOngoing(true);
     return fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
       method: 'DELETE',
+      cache: 'no-store',
     })
       .then(async (response) => {
         const { success } = await response.json();
@@ -72,6 +73,7 @@ const AdminProvider = ({ children }) => {
     return fetch(`/api/v1/word`, {
       method: 'POST',
       body: JSON.stringify({ ...wordObject }),
+      cache: 'no-store',
     })
       .then(async (response) => {
         const { success, data } = await response.json();
@@ -114,6 +116,7 @@ const AdminProvider = ({ children }) => {
     return fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
       method: 'PUT',
       body: JSON.stringify({ ...wordObject }),
+      cache: 'no-store',
     })
       .then(async (response) => {
         const { success } = await response.json();
@@ -156,7 +159,9 @@ const AdminProvider = ({ children }) => {
     setAdminState((prev) => ({ ...prev, mode: constants.MODES.none }));
 
   useEffect(() => {
-    fetch('/api/v1/words')
+    fetch('/api/v1/words', {
+      cache: 'no-store',
+    })
       .then(async (response) => {
         const { success, message, data } = await response.json();
         setAdminState((prev) => ({ ...prev, listOfWords: data }));

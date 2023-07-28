@@ -12,7 +12,7 @@ INSERT INTO reviews (word_id, user_id, bin, time_to_next_appearance, wrong_attem
 INSERT INTO words (word, definition) VALUES
   ('apple', 'A red fruit that is eaten as food.'),
   ('banana', 'A yellow fruit that is eaten as food.'),
-  ('orange', 'A round, orange-colored citrus fruit.'),
+  ('orange', 'A round, orange colored citrus fruit.'),
   ('pear', 'A round, green-colored fruit.'),
   ('grape', 'A small, round fruit that grows in clusters.'),
   ('pinapple', 'A cylinderical shape, green to orange fruit.'),

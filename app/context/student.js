@@ -28,6 +28,7 @@ const StudentProvider = ({ children }) => {
         wrongAttempts: wordObject.wrong_attempts,
         bin: wordObject.bin,
       }),
+      cache: 'no-store',
     })
       .then(async (response) => {
         const { success, message, data } = await response.json();
@@ -62,7 +63,9 @@ const StudentProvider = ({ children }) => {
     setStudentState((prev) => ({ ...prev, showDefinition: value }));
 
   useEffect(() => {
-    fetch('/api/v1/review')
+    fetch('/api/v1/review', {
+      cache: 'no-store',
+    })
       .then(async (response) => {
         const { success, message, data } = await response.json();
         setStudentState((prev) => ({
