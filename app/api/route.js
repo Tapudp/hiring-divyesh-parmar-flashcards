@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
+import logger from '../helpers/logger';
 
 export async function GET() {
   try {
+    logger.info('api :: get :: success :: ');
     return NextResponse.json(
       {
         success: true,
@@ -11,6 +13,7 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
+    logger.error('api :: get :: failed :: ', error);
     return NextResponse.json(
       {
         success: false,

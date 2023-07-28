@@ -21,7 +21,7 @@ export async function GET(_, requestDetails) {
 
     await disconnect(connection);
 
-    logger.info(' success : word : get :: ', id, rows);
+    logger.info('word : get : success :: ', id, rows);
     return NextResponse.json(
       {
         success: rows.length > 0,
@@ -32,7 +32,7 @@ export async function GET(_, requestDetails) {
       { status: 200 }
     );
   } catch (error) {
-    logger.error(' failed : word : get :: ', error);
+    logger.error('word : get : failed :: ', error);
     return NextResponse.json(
       {
         success: false,
@@ -64,7 +64,7 @@ export async function PUT(requestBody, requestDetails) {
     const { affectedRows } = updateDetails;
 
     await disconnect(connection);
-    logger.info(' success : word : edit :: ', id, updateDetails);
+    logger.info('word : edit : success :: ', id, updateDetails);
     return NextResponse.json(
       {
         success: true,
@@ -74,7 +74,7 @@ export async function PUT(requestBody, requestDetails) {
       { status: 200 }
     );
   } catch (error) {
-    logger.error(' failed : word : delete :: ', error);
+    logger.error('word : edit :  failed :: ', error);
     return NextResponse.json(
       {
         success: false,
@@ -104,7 +104,7 @@ export async function DELETE(_, requestDetails) {
     const { affectedRows } = updateDetails;
 
     await disconnect(connection);
-    logger.info(' success : word : delete :: ', id, updateDetails);
+    logger.info('word : delete : success :: ', id, updateDetails);
     return NextResponse.json(
       {
         success: true,
@@ -114,7 +114,7 @@ export async function DELETE(_, requestDetails) {
       { status: 200 }
     );
   } catch (error) {
-    logger.error(' failed : word : delete :: ', id, error);
+    logger.error('word : delete : failed :: ', id, error);
     return NextResponse.json(
       {
         success: false,

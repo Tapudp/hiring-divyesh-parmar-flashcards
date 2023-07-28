@@ -23,10 +23,12 @@ export async function POST(requestBody) {
         },
         connection
       );
+    } else {
+      throw new Error(`There was some updat to update rows :: ${JSON.stringify(updateDetails)}`);
     }
 
     await disconnect(connection);
-    logger.info(' word :: POST :: success :: ', result);
+    logger.info('word :: POST :: success :: ', result);
     return NextResponse.json(
       {
         success: true,
@@ -36,6 +38,7 @@ export async function POST(requestBody) {
       { status: 201 }
     );
   } catch (error) {
+    logger.error('word :: POST :: failed :: ', error);
     return NextResponse.json(
       {
         success: false,

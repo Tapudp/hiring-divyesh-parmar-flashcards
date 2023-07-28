@@ -37,7 +37,7 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    logger.info('review : get : failure :: ', error);
+    logger.info('review : get : failed :: ', error);
     return NextResponse.json(
       {
         success: false,
@@ -67,10 +67,8 @@ export async function PUT(requestBody) {
       reviewedWord,
       answer
     );
-    const unixTimestamp = new Date().getTime() / 1000;
-    const totalTimeInSeconds = unixTimestamp + timeToNextAppearance;
 
-    const values = [newAttemptsCount, newBin, totalTimeInSeconds, reviewedWord.word_id];
+    const values = [newAttemptsCount, newBin, timeToNextAppearance, reviewedWord.word_id];
 
     const [rows] = await connection.query(sql, values);
 
@@ -86,7 +84,7 @@ export async function PUT(requestBody) {
       { status: 200 }
     );
   } catch (error) {
-    logger.info('review : put : failure :: ', error);
+    logger.info('review : put : failed :: ', error);
     return NextResponse.json(
       {
         success: false,

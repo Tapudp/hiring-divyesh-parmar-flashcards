@@ -3,7 +3,7 @@ import logger from './logger';
 
 export default async function triggerAdditionToReviewTable(wordDetails, currentConnection) {
   try {
-    const { wordId, word, definition } = wordDetails;
+    const { wordId } = wordDetails;
     const initialBin = 0;
     const intialWrongAttempts = 0;
 

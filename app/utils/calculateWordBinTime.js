@@ -33,8 +33,8 @@ export default function calculateWordBinAndTime(word, answer) {
     newAttemptsCount = word.wrong_attempts;
     newBin = word.bin + 1;
   }
-
-  timeToNextAppearance = constants.TIMESPANS[newBin];
+  const unixTimestamp = new Date().getTime() / 1000;
+  timeToNextAppearance = unixTimestamp + constants.TIMESPANS[newBin];
 
   return { newAttemptsCount, newBin, timeToNextAppearance };
 }

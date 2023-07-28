@@ -27,7 +27,7 @@ async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    logger.info('words : get : fail :: ', error);
+    logger.error('words : get : failed :: ', error);
 
     return NextResponse.json(
       {
