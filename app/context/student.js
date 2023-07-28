@@ -23,8 +23,10 @@ const StudentProvider = ({ children }) => {
     return fetch('/api/v1/review', {
       method: 'PUT',
       body: JSON.stringify({
-        reviewedWord: { ...wordObject },
-        answer,
+        answer: answer,
+        wordId: wordObject.word_id,
+        wrongAttempts: wordObject.wrong_attempts,
+        bin: wordObject.bin,
       }),
     })
       .then(async (response) => {
