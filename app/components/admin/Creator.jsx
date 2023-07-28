@@ -93,6 +93,7 @@ export default function Creator() {
         <div className='grid place-content-start text-4xl row-span-1'>
           {selectedWord !== null ? 'Edit word' : 'Create a new word'}
         </div>
+        <div className='text-xs'>Maximum of 255 characters is supported</div>
         <div className='grid grid-cols-4 place-content-center row-span-1 items-center'>
           <label htmlFor='word-name' className='grid col-span-1'>
             Word
