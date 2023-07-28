@@ -12,5 +12,7 @@ CREATE TABLE reviews (
   user_id INT NOT NULL,
   bin TINYINT NOT NULL,
   time_to_next_appearance INT NOT NULL,
-  wrong_attempts INT NOT NULL
+  wrong_attempts INT NOT NULL,
+  is_deleted INT NOT NULL DEFAULT 0,
+  CONSTRAINT is_deleted_check_on_reviews CHECK (is_deleted IN (0, 1, 2))
 );

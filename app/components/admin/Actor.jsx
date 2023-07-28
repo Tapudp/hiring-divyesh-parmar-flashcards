@@ -4,7 +4,7 @@ import { useAdminContext } from '../../context/admin';
 
 export default function Actor() {
   const {
-    adminState: { selectedWord },
+    adminState: { selectedWord, listOfWords },
     deleteWord,
     switchToEditMode,
     isAnyProcessOngoing,
@@ -21,7 +21,13 @@ export default function Actor() {
   };
 
   if (!selectedWord) {
-    return <div className='grid p-2'>Please select a word or create a new one</div>;
+    return (
+      <div className='grid p-2'>
+        {listOfWords.length === 0
+          ? 'Once there are words to show, this section can show more details about that word!'
+          : 'Please select a word or create a new one'}
+      </div>
+    );
   }
 
   return (

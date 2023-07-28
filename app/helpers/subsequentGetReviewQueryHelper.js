@@ -15,7 +15,10 @@ export default async function subsequentGetReviewQueryHelper(currentDataRows, cu
             words.word AS word, words.definition AS definition
           FROM reviews
           LEFT JOIN words ON reviews.word_id = words.id
-          WHERE wrong_attempts != ? AND bin < ?
+          WHERE wrong_attempts != ?
+            AND bin < ?
+            AND words.is_deleted = 0
+            AND reviews.is_deleted = 0
           ORDER BY bin DESC
         `;
   const secondQueryValues = [constants.ALLOWED_WRONG_ATTEMPTS, constants.HIGHEST_BIN];

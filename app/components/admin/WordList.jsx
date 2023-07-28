@@ -20,8 +20,8 @@ export default function WordList() {
 
   useEffect(() => {
     const wordListContainer = document.getElementById('word-list-container');
-    if (!wordListContainer) {
-      wordListContainer.scrollTop();
+    if (wordListContainer) {
+      wordListContainer.scrollTo(0, 0);
     }
   }, [listOfWords.length]);
 

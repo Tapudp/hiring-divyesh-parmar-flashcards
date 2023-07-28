@@ -16,7 +16,11 @@ export async function GET() {
           words.word AS word, words.definition AS definition
         FROM reviews
         LEFT JOIN words ON reviews.word_id = words.id
-        WHERE wrong_attempts != ? AND bin < ? AND time_to_next_appearance <= ? AND words.is_deleted = 0
+        WHERE wrong_attempts != ?
+          AND bin < ?
+          AND time_to_next_appearance <= ?
+          AND words.is_deleted = 0
+          AND reviews.is_deleted = 0
         ORDER BY bin DESC
       `;
     const values = [

@@ -26,7 +26,7 @@ export default function AdminComponent() {
   return (
     <div className='grid col-span-10 grid-cols-2'>
       <div className='grid'>
-        <div className='grid grid-cols-2 mb-2 py-1'>
+        <div className='grid grid-cols-2 mb-2 py-1 h-12'>
           <WordCount />
           {mode !== constants.MODES.create ? <CreateButton /> : <div className='grid' />}
         </div>

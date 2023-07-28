@@ -1,5 +1,6 @@
 import { connect, disconnect } from '@/app/db/connection';
 import logger from '@/app/helpers/logger';
+import triggerDeletionToReviewTable from '@/app/helpers/triggerDeletionToReviewTable';
 import validateRequest from '@/app/helpers/validate-request';
 import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
@@ -112,7 +113,18 @@ export async function DELETE(_, requestDetails) {
     const values = [id];
 
     const [updateDetails] = await connection.query(sql, values);
-    const { affectedRows } = updateDetails;
+
+    let result;
+    if (updateDetails.affectedRows > 0) {
+      result = await triggerDeletionToReviewTable(
+        {
+          wordId: id,
+        },
+        connection
+      );
+    } else {
+      throw new Error(`There was some updat to update rows :: ${JSON.stringify(updateDetails)}`);
+    }
 
     await disconnect(connection);
     logger.info('word : delete : success :: ', id, updateDetails);
@@ -120,17 +132,17 @@ export async function DELETE(_, requestDetails) {
       {
         success: true,
         message: 'Deleted the word successfully',
-        data: { affectedRows, id },
+        data: { affectedRows: updateDetails.affectedRows, id },
       },
       { status: 200 }
     );
   } catch (error) {
-    logger.error('word : delete : failed :: ', id, error);
+    logger.error('word : delete : failed :: ', error);
     return NextResponse.json(
       {
         success: false,
         message: 'Failed to delete the word',
-        error: error,
+        error: error.message,
       },
       { status: 500 }
     );
