@@ -1,6 +1,8 @@
 import { connect, disconnect } from '@/app/db/connection';
 import logger from '@/app/helpers/logger';
 import triggerAdditionToReviewTable from '@/app/helpers/triggerAdditionToReviewTable';
+import validateRequest from '@/app/helpers/validate-request';
+import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
 
 export async function POST(requestBody) {
@@ -8,6 +10,16 @@ export async function POST(requestBody) {
     const connection = await connect();
 
     const { word, definition } = await requestBody.json();
+
+    const { isValid: isValidRequest, fieldName } = validateRequest(
+      { word, definition },
+      utils.validators.conditions
+    );
+
+    if (!isValidRequest) {
+      throw new Error(`request is not valid for ${fieldName}`);
+    }
+
     const sql = `INSERT INTO words (word, definition) VALUES (?, ?)`;
     const values = [word, definition];
 
@@ -43,7 +55,7 @@ export async function POST(requestBody) {
       {
         success: false,
         message: 'Failed to create a new word',
-        error: error,
+        error: error.message,
       },
       { status: 500 }
     );

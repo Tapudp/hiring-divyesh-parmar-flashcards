@@ -1,5 +1,7 @@
 import { connect, disconnect } from '@/app/db/connection';
 import logger from '@/app/helpers/logger';
+import validateRequest from '@/app/helpers/validate-request';
+import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
 
 export async function GET(_, requestDetails) {
@@ -52,6 +54,15 @@ export async function PUT(requestBody, requestDetails) {
     } = requestDetails;
     const { word, definition } = await requestBody.json();
 
+    const { isValid: isValidRequest, fieldName } = validateRequest(
+      { word, definition },
+      utils.validators.conditions
+    );
+
+    if (!isValidRequest) {
+      throw new Error(`request is not valid for ${fieldName}`);
+    }
+
     const sql = `
       UPDATE words
       SET word = COALESCE(?, word),
@@ -79,7 +90,7 @@ export async function PUT(requestBody, requestDetails) {
       {
         success: false,
         message: 'Failed to update the word',
-        error: error,
+        error: error.message,
       },
       { status: 500 }
     );
