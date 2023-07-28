@@ -2,6 +2,7 @@ import logger from '@/app/helpers/logger';
 import { connect, disconnect } from '../../../db/connection';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1; //revalidate api every 1 second
 async function GET() {
   try {
     const connection = await connect();

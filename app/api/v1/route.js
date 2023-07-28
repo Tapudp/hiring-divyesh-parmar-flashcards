@@ -1,6 +1,7 @@
 import logger from '@/app/helpers/logger';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1; //revalidate api every 1 second
 export async function GET() {
   try {
     logger.info('v1 :: get :: success :: ');

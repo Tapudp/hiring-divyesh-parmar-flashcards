@@ -6,6 +6,7 @@ import { default as validateRequest } from '@/app/helpers/validate-request';
 import utils from '@/app/utils';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1; //revalidate api every 1 second
 export async function GET() {
   try {
     const connection = await connect();
