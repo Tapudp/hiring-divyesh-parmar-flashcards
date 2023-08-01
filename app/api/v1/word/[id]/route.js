@@ -40,8 +40,7 @@ export async function GET(_, requestDetails) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to fetch the word',
-        error: error,
+        message: error.message,
       },
       { status: 500 }
     );
@@ -94,8 +93,7 @@ export async function PUT(requestBody, requestDetails) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to update the word',
-        error: error.message,
+        message: error.message,
       },
       { status: statusCode }
     );
@@ -145,8 +143,7 @@ export async function DELETE(_, requestDetails) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to delete the word',
-        error: error.message,
+        message: error.message,
       },
       { status: 500 }
     );

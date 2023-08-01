@@ -18,8 +18,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to connect to flash-card api v1',
-        error: error,
+        message: error.message,
       },
       { status: 500 }
     );

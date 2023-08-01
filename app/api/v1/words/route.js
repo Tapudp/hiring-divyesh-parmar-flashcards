@@ -33,8 +33,7 @@ async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to fetch all the words ',
-        error: error,
+        message: error.message,
       },
       { status: 500 }
     );

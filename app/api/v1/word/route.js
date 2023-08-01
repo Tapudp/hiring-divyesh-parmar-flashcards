@@ -57,8 +57,7 @@ export async function POST(requestBody) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Failed to create a new word',
-        error: error.message,
+        message: error.message,
       },
       { status: statusCode }
     );

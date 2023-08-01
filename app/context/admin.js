@@ -32,7 +32,7 @@ const AdminProvider = ({ children }) => {
       cache: 'no-store',
     })
       .then(async (response) => {
-        const { success } = await response.json();
+        const { success, message } = await response.json();
         if (success) {
           setAdminState((prev) => {
             const filteredList = prev.listOfWords.filter(
@@ -44,17 +44,12 @@ const AdminProvider = ({ children }) => {
               listOfWords: filteredList,
             };
           });
-          return Promise.resolve(constants.actionMessages.DELETE_SUCCESS);
+          return Promise.resolve(message);
         }
-        return Promise.reject(constants.actionMessages.DELETE_ERROR);
+        return Promise.reject(message);
       })
       .catch((error) => {
-        console.log(
-          'there was an error while deleting the word :: ',
-          adminState.selectedWord.id,
-          error
-        );
-        return Promise.reject(constants.actionMessages.DELETE_ERROR);
+        return Promise.reject(error);
       })
       .finally(() => {
         setOngoing(false);
@@ -76,7 +71,7 @@ const AdminProvider = ({ children }) => {
       cache: 'no-store',
     })
       .then(async (response) => {
-        const { success, data } = await response.json();
+        const { success, message, data } = await response.json();
         if (success) {
           const newWord = {
             id: data.newWordId,
@@ -94,13 +89,12 @@ const AdminProvider = ({ children }) => {
               listOfWords: [...currentList],
             };
           });
-          return Promise.resolve(constants.actionMessages.CREATE_SUCCESS);
+          return Promise.resolve(message);
         }
-        return Promise.reject(constants.actionMessages.CREATE_ERROR);
+        return Promise.reject(message);
       })
       .catch((error) => {
-        logger.error('there was an error while deleting the word :: ', wordObject, error);
-        return Promise.reject(constants.actionMessages.CREATE_ERROR);
+        return Promise.reject(error);
       })
       .finally(() => {
         setOngoing(false);
@@ -110,7 +104,7 @@ const AdminProvider = ({ children }) => {
   const updateWord = (wordObject) => {
     setOngoing(true);
     if (!wordObject || !wordObject.word || !wordObject.definition) {
-      return constants.actionMessages.NO_DETAILS;
+      return Promise.reject(constants.actionMessages.NO_DETAILS);
     }
 
     return fetch(`/api/v1/word/${adminState.selectedWord.id}`, {
@@ -119,30 +113,28 @@ const AdminProvider = ({ children }) => {
       cache: 'no-store',
     })
       .then(async (response) => {
-        const { success } = await response.json();
-        if (success) {
-          setAdminState((prev) => {
-            const newListWitUpdate = prev.listOfWords.map((item) => {
-              if (item.id === wordObject.id) {
-                return { ...wordObject };
-              }
-              return item;
-            });
-
-            return {
-              ...prev,
-              selectedWord: { ...wordObject },
-              listOfWords: [...newListWitUpdate],
-            };
-          });
-          return Promise.resolve(constants.actionMessages.UPDATE_SUCCESS);
+        const { success, message } = await response.json();
+        if (!success) {
+          return Promise.reject(message);
         }
+        setAdminState((prev) => {
+          const newListWitUpdate = prev.listOfWords.map((item) => {
+            if (item.id === wordObject.id) {
+              return { ...wordObject };
+            }
+            return item;
+          });
 
-        return Promise.reject(constants.actionMessages.UPDATE_ERROR);
+          return {
+            ...prev,
+            selectedWord: { ...wordObject },
+            listOfWords: [...newListWitUpdate],
+          };
+        });
+        return Promise.resolve(message);
       })
       .catch((error) => {
-        console.log('there was an error while deleting the word :: ', wordObject, error);
-        return Promise.reject(constants.actionMessages.UPDATE_ERROR);
+        return Promise.reject(error);
       })
       .finally(() => {
         setOngoing(false);
@@ -167,7 +159,6 @@ const AdminProvider = ({ children }) => {
         setAdminState((prev) => ({ ...prev, listOfWords: data }));
       })
       .catch((error) => {
-        logger.error('Admin layout failed to fetch words :: ', error);
         alert('There was error while fetching all the words. You can try after some time.');
         return Promise.reject('There was error fetching all words');
       })

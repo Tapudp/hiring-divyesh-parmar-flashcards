@@ -47,8 +47,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: 'Review data fetch failed',
-        error: error,
+        message: error.message,
       },
       { status: 500 }
     );
@@ -105,9 +104,8 @@ export async function PUT(requestBody) {
     logger.info('review : put : failed :: ', error);
     return NextResponse.json(
       {
-        message: 'Update review for word failed',
+        message: error.message,
         success: false,
-        error: error.message,
       },
       { status: statusCode }
     );

@@ -34,7 +34,7 @@ const StudentProvider = ({ children }) => {
         const { success, message, data } = await response.json();
 
         if (!success) {
-          return Promise.reject(constants.actionMessages.REVIEW_ERROR);
+          return Promise.reject(message);
         }
 
         setStudentState((prev) => {
@@ -48,11 +48,10 @@ const StudentProvider = ({ children }) => {
             reviewWords: newList,
           };
         });
-        return Promise.resolve(constants.actionMessages.REVIEW_SUCCESS);
+        return Promise.resolve(message);
       })
       .catch((error) => {
-        logger.error('There was some error while updating the review of the word', error);
-        return Promise.reject(constants.actionMessages.REVIEW_ERROR);
+        return Promise.reject(error);
       })
       .finally(() => {
         setOngoing(false);
