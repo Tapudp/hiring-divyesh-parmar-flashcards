@@ -37,7 +37,7 @@ export async function POST(requestBody) {
         connection
       );
     } else {
-      throw new Error(`There was some updat to update rows :: ${JSON.stringify(updateDetails)}`);
+      throw new Error(`There was some error to update rows :: ${JSON.stringify(updateDetails)}`);
     }
 
     await disconnect(connection);

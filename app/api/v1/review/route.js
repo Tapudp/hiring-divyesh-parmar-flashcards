@@ -56,6 +56,7 @@ export async function GET() {
 }
 
 export async function PUT(requestBody) {
+  let statusCode = 500;
   try {
     const connection = await connect();
     const { wrongAttempts, bin, wordId, answer } = await requestBody.json();
@@ -66,6 +67,7 @@ export async function PUT(requestBody) {
     );
 
     if (!isValidRequest) {
+      statusCode = 400;
       throw new Error(`request is not valid for ${fieldName}`);
     }
 
@@ -89,7 +91,7 @@ export async function PUT(requestBody) {
     const [rows] = await connection.query(sql, values);
 
     await disconnect(connection);
-
+    statusCode = 200;
     logger.info('review : put : success :: ', rows.affectedRows);
     return NextResponse.json(
       {
@@ -97,7 +99,7 @@ export async function PUT(requestBody) {
         message: 'Updated review for word successfully',
         data: rows,
       },
-      { status: 200 }
+      { status: statusCode }
     );
   } catch (error) {
     logger.info('review : put : failed :: ', error);
@@ -107,7 +109,7 @@ export async function PUT(requestBody) {
         success: false,
         error: error.message,
       },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }

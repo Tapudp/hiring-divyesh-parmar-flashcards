@@ -49,6 +49,7 @@ export async function GET(_, requestDetails) {
 }
 
 export async function PUT(requestBody, requestDetails) {
+  let statusCode = 500;
   try {
     const connection = await connect();
     const {
@@ -62,6 +63,7 @@ export async function PUT(requestBody, requestDetails) {
     );
 
     if (!isValidRequest) {
+      statusCode = 400;
       throw new Error(`request is not valid for ${fieldName}`);
     }
 
@@ -75,6 +77,7 @@ export async function PUT(requestBody, requestDetails) {
 
     const [updateDetails] = await connection.query(sql, values);
     const { affectedRows } = updateDetails;
+    statusCode = 200;
 
     await disconnect(connection);
     logger.info('word : edit : success :: ', id, updateDetails);
@@ -84,7 +87,7 @@ export async function PUT(requestBody, requestDetails) {
         message: 'Updated the word successfully',
         data: { affectedRows, id },
       },
-      { status: 200 }
+      { status: statusCode }
     );
   } catch (error) {
     logger.error('word : edit :  failed :: ', error);
@@ -94,7 +97,7 @@ export async function PUT(requestBody, requestDetails) {
         message: 'Failed to update the word',
         error: error.message,
       },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }
