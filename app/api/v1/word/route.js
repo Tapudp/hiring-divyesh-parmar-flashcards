@@ -7,6 +7,7 @@ import { NextResponse } from 'next/server';
 
 export const revalidate = 1; //revalidate api every 1 second
 export async function POST(requestBody) {
+  let statusCode = 500;
   try {
     const connection = await connect();
 
@@ -18,6 +19,7 @@ export async function POST(requestBody) {
     );
 
     if (!isValidRequest) {
+      statusCode = 400;
       throw new Error(`request is not valid for ${fieldName}`);
     }
 
@@ -58,7 +60,7 @@ export async function POST(requestBody) {
         message: 'Failed to create a new word',
         error: error.message,
       },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }
